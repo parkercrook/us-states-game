@@ -12,12 +12,15 @@ turtle.shape(IMAGE)
 score_manager = ScoreManager()
 writer = Writer()
 csv_helper = CsvHelper()
-game_is_on = True
 
-while game_is_on:
+while not score_manager.game_won():
 
     # Convert guess to title case
     answer = turtle.textinput(title=f"{score_manager.score}/50 States Correct", prompt="What's another state name?").title()
+
+    # Check player exit
+    if answer == "Exit":
+        break
 
     # Check if the guess is among the 50 states
     if csv_helper.state_exists(answer):
@@ -27,8 +30,4 @@ while game_is_on:
             score_manager.add_point(answer)
             writer.write_answer(answer)
 
-    # Check game end
-    if score_manager.game_won():
-        game_is_on = False
-
-screen.exitonclick()
+csv_helper.create_missing_states_csv(score_manager.correct_guesses)

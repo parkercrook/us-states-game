@@ -19,12 +19,6 @@ class CsvHelper:
         return x, y
 
     def create_missing_states_csv(self, correct_guesses):
-        data_dict = {
-            "Missing State": []
-        }
-        for state in self.data["state"]:
-            if state not in correct_guesses:
-                data_dict["Missing State"].append(state)
-
+        data_dict = {"Missing State": [state for state in self.data.state if state not in correct_guesses]}
         df = pandas.DataFrame(data_dict)
         df.to_csv("missing_states.csv")
